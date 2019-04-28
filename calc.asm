@@ -4,16 +4,16 @@ extern scanf ; declare external function "scanf" for user input
 global main ; set gcc entry point (main function)
 
 section .data ;place to init variable str
-	t0: db "Method (1=add, 2=sub, 3=mult, 4=div): ", 0 ;user input string
-	t1: db "Number 1: ", 0 ;first user input num 
-	t2: db "Number 2: ", 0 ;second user input num 
+    t0: db "Method (1=add, 2=sub, 3=mult, 4=div): ", 0 ;user input string
+    t1: db "Number 1: ", 0 ;first user input num 
+    t2: db "Number 2: ", 0 ;second user input num 
     formatin: db "%d", 0 ;format for input (num)
 
     int1: times 4 db 0 ;32-bits integer = 4 bytes
     int2: times 4 db 0 ;same as int1
     method: times 4 db 0 ;same as other ints
 
-	final: db "Answer=%d", 10, 0 ;setup for final printed string (printf)
+    final: db "Answer=%d", 10, 0 ;setup for final printed string (printf)
 
 main: ;main function gets inputs
 
