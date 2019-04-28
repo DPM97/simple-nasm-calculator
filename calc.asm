@@ -15,7 +15,7 @@ section .data ;place to init variable str
 
     final: db "Answer=%d", 10, 0 ;setup for final printed string (printf)
 
-main: ;main function gets inputs
+main:
 
    	push t1 ;pushes first message to stack
    	call printf ;calls print with t1 param
