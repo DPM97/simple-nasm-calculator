@@ -1,3 +1,5 @@
+;run using "run"
+
 bits 32 ; init 32 bit for nasm 
 extern printf ; declare external function "printf" 
 extern scanf ; declare external function "scanf" for user input
