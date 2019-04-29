@@ -6,6 +6,6 @@ execute simple equations using nasm (add/subtract/multiply/divide) (linux)
 cd my_path
 ```
 ```
-run
+make
 ```
 
