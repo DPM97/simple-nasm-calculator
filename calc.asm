@@ -11,11 +11,15 @@ section .data ;place to init variable str
     t0: db "Method (1=add, 2=sub, 3=mult, 4=div): ", 0 ;user input string
     t1: db "Number 1: ", 0 ;first user input num 
     t2: db "Number 2: ", 0 ;second user input num 
+
     formatin: db "%d", 0 ;format for input (num)
 
     int1: times 4 db 0 ;32-bits integer = 4 bytes
     int2: times 4 db 0 ;same as int1
     method: times 4 db 0 ;same as other ints
+
+    prompt: db 10, "Type 1 to solve another equation or 2 to exit: ", 0 ;user prompt
+    promptval: times 4 db 0 ;same as other ints
 
     final: db "Answer=%d", 10, 0 ;setup for final printed string (printf)
 
@@ -72,8 +76,6 @@ main:
    	je div ;jumps to div function 
 
 
-	ret ;return value
-
 
 add:
 
@@ -84,7 +86,9 @@ add:
 
 	call printf ;call printf using final as param
 
-	call exit ;call exit function
+	add esp, 8 ;remove off stack
+
+	jmp prompted ;call prompted to prompt next equation
 	
 sub: 
 
@@ -95,7 +99,9 @@ sub:
 
 	call printf ;call printf using final as param
 
-	call exit ;call exit function
+	add esp, 8 ;remove off stack
+
+	call prompted ;call prompted to prompt next equation
 
 
 div:
@@ -109,7 +115,9 @@ div:
 
 	call printf ;call printf using final as param
 
-	call exit ;call exit function
+	add esp, 8 ;remove off stack
+
+	call prompted ;call prompted to prompt next equation
 
 mult:
 
@@ -122,7 +130,30 @@ mult:
 
 	call printf ;call printf using final as param
 
-	call exit ;call exit function
+	add esp, 8 ;remove off stack
+
+	call prompted ;call prompted to prompt next equation
+
+
+prompted:
+
+	push prompt ;pushes prompt to stack
+	call printf ;call printf
+
+	add esp, 4 ;remove prompt off stack
+	push promptval ;push int that scanf will push to
+	push formatin ;push format for scanf
+	call scanf ;call scanf function
+
+	add esp, 8 ;remove promptval and formatin from stack
+
+	mov eax, dword [promptval] ;set eax as promptval
+
+	cmp eax, 1 ;figure out if promptval is 1 for 'yes'
+	je main ;if so then jump to main
+
+	call exit ;exit program if doesn't jump
+
 
 exit:
 
