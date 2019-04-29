@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;run using "make";;;;;
+;;;;;run using "make";;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 bits 32 ; init 32 bit for nasm 
@@ -18,12 +18,23 @@ section .data ;place to init variable str
     int2: times 4 db 0 ;same as int1
     method: times 4 db 0 ;same as other ints
 
+	welcome0: db 10, "++++++++++++++++++++++++++++++++++++++++++++++++++++++", 0
+	welcome1: db 10, "++++++++++WELCOME TO DYLAN'S NASM CALCULATOR++++++++++", 0
+	welcome2: db 10, "++++++++++++++++++++++++++++++++++++++++++++++++++++++", 10, 10, 0
+
     prompt: db 10, "Type 1 to solve another equation or 2 to exit: ", 0 ;user prompt
     promptval: times 4 db 0 ;same as other ints
 
-    final: db "Answer=%d", 10, 0 ;setup for final printed string (printf)
+    final: db 10, "Answer=%d", 10, 0 ;setup for final printed string (printf)
 
 main:
+
+	call welcome ;calls method to print welcome screen
+
+	call getinfo
+
+
+getinfo: 
 
    	push t1 ;pushes first message to stack
    	call printf ;calls print with t1 param
@@ -74,7 +85,6 @@ main:
 
    	cmp ecx, 4 ;compare method value and 4 (if ecx - 4 == 0)
    	je div ;jumps to div function 
-
 
 
 add:
@@ -150,9 +160,38 @@ prompted:
 	mov eax, dword [promptval] ;set eax as promptval
 
 	cmp eax, 1 ;figure out if promptval is 1 for 'yes'
-	je main ;if so then jump to main
+	je getinfo ;if so then jump to main
 
 	call exit ;exit program if doesn't jump
+
+
+welcome: 
+
+	push welcome0 ;push message to stack
+	call printf ;print
+
+	add esp, 4 ;clear stack pointers
+
+	push welcome0 ;push message to stack
+	call printf ;print
+
+	add esp, 4 ;clear stack pointers
+
+	push welcome1 ;push message to stack
+	call printf ;print
+
+	add esp, 4 ;clear stack pointers
+
+	push welcome0 ;push message to stack
+	call printf ;print
+
+	add esp, 4 ;clear stack pointers
+
+	push welcome2 ;push message to stack
+	call printf ;print
+
+	add esp, 4 ;clear stack pointers
+	ret ;return
 
 
 exit:
