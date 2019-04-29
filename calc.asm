@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;run using "run";;;;;
+;;;;;run using "make";;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 bits 32 ; init 32 bit for nasm 
