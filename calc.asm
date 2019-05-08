@@ -8,7 +8,7 @@ extern scanf ; declare external function "scanf" for user input
 global main ; set gcc entry point (main function)
 
 section .data ;place to init variable str
-    t0: db "Method (1=add, 2=sub, 3=mult, 4=div): ", 0 ;user input string
+    t0: db "Method (1=add, 2=sub, 3=mult, 4=div, 5=pwr): ", 0 ;user input string
     t1: db "Number 1: ", 0 ;first user input num 
     t2: db "Number 2: ", 0 ;second user input num 
 
@@ -86,6 +86,9 @@ getinfo:
    	cmp ecx, 4 ;compare method value and 4 (if ecx - 4 == 0)
    	je div ;jumps to div function 
 
+   	cmp ecx, 5 ;compare method calue and 5 (if ecx -5 == 0)
+   	je pwr ;jumps to pwr function
+
 
 add:
 
@@ -143,6 +146,28 @@ mult:
 	add esp, 8 ;remove off stack
 
 	call prompted ;call prompted to prompt next equation
+
+
+pwr:
+	mov ebx, dword [int1] ;set ebx to int1
+	mov ecx, 1 ;set ecx to 0 for loop
+	mov eax, dword [int1] ;set eax to first number
+
+	loop:
+		cmp ecx, dword [int2] ;compare loop number to second value (i == int2)
+		je printpwr ;jump to printpower if equal;
+		xor edx, edx ;make sure edx is free
+		mul ebx ;mult eax and ebx
+		add ecx, 1
+		jmp loop ;if not equal reloop 
+
+	printpwr:
+		push eax ;push final value
+		push dword final ;pushes final string to stack
+		call printf ;print answer
+		add esp, 8 ;remove vars from stack
+		call prompted ;call prompted 
+
 
 
 prompted:
