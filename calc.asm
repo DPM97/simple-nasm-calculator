@@ -8,7 +8,7 @@ extern scanf ; declare external function "scanf" for user input
 global main ; set gcc entry point (main function)
 
 section .data ;place to init variable str
-    t0: db "Method (1=add, 2=sub, 3=mult, 4=div, 5=pwr): ", 0 ;user input string
+    t0: db "Method (1=add, 2=sub, 3=mult, 4=div, 5=pwr, 6=fctr): ", 0 ;user input string
     t1: db "Number 1: ", 0 ;first user input num 
     t2: db "Number 2: ", 0 ;second user input num 
 
@@ -26,6 +26,7 @@ section .data ;place to init variable str
     promptval: times 4 db 0 ;same as other ints
 
     final: db 10, "Answer=%d", 10, 0 ;setup for final printed string (printf)
+    large: db 10, "Your input is too large... please try a number < 14", 10, 10, 0
 
 main:
 
@@ -36,7 +37,20 @@ main:
 
 getinfo: 
 
-   	push t1 ;pushes first message to stack
+
+   	push t0; pushes first message to stack (method 1=add, 2=sub, etc...)
+   	call printf; prints t0
+
+   	add esp, 4 ;adjusts stack pointer by 4 bits (removes 1 param)
+   	push method ;pushes method to stack (first param)
+   	push formatin ;pushes format to stack (second param)
+   	call scanf ;calls scanf using method and format params
+
+   	add esp, 8 ;adjusts stack pointer by 8 bits (removes 2 params)
+
+
+
+   	push t1 ;pushes second message to stack
    	call printf ;calls print with t1 param
 
    	add esp, 4 ;adjusts stack pointer by 4 bits (removes 1 param)
@@ -45,6 +59,12 @@ getinfo:
    	call scanf ;calls scanf with param 1 and param 2 in stack
 
    	add esp, 8 ;adjusts stack pointer by 8 bits (removes 2 params)
+
+
+   	mov ecx, dword [method] ;move method to ecx register
+   	cmp ecx, 6 ;checks to see if equal
+   	je fctr ;jump to factorial func if so
+
 
    	push t2 ;pushes second message to stack
    	call printf ;calls print with t2 param
@@ -56,21 +76,12 @@ getinfo:
 
    	add esp, 8 ;adjusts stack pointer by 8 bits (removes 2 params)
 
-   	push t0; pushes third message to stack (method 1=add, 2=sub, etc...)
-   	call printf; prints t0
-
-   	add esp, 4 ;adjusts stack pointer by 4 bits (removes 1 param)
-   	push method ;pushes method to stack (first param)
-   	push formatin ;pushes format to stack (second param)
-   	call scanf ;calls scanf using method and format params
-
-   	add esp, 8 ;adjusts stack pointer by 8 bits (removes 2 params)
-
    	;now that inputs are in data --> move inputs to register's
 
    	mov eax, dword [int1] ;move int1 to eax register
    	mov ebx, dword [int2] ;move int2 to ebx register
-   	mov ecx, dword [method] ;move method to ecx register
+
+   	mov ecx, dword [method] ;move method to ecx
 
    	;now that we have all of user inputs situated --> call proper method
 
@@ -168,6 +179,46 @@ pwr:
 		add esp, 8 ;remove vars from stack
 		call prompted ;call prompted 
 
+fctr:
+
+	mov ebx, dword [int1] ;move int1 to ebx register
+
+	cmp ebx, 13
+	jg printlarge ;if bigger than 13 ask for another 
+
+	mov eax, dword [int1] 
+	sub ebx, 1
+	loopf:
+		cmp ebx, 0
+		je printfctr ;print if loop finished
+
+		xor edx, edx
+		mul ebx ;mult eax by ebx
+		sub ebx, 1 ; i--
+		jmp loopf
+
+	printfctr:
+		push eax 
+		push dword final
+		call printf
+		add esp, 8
+		call prompted
+
+	printlarge:
+		push large
+		call printf
+		add esp, 4
+		push t1 ;pushes second message to stack
+   		call printf ;calls print with t1 param
+
+   		add esp, 4 ;adjusts stack pointer by 4 bits (removes 1 param)
+   		push int1 ;pushes int1 to stack (first param)
+   		push formatin ;pushes format to stack (second param)
+   		call scanf ;calls scanf with param 1 and param 2 in stack
+
+   		add esp, 8 ;adjusts stack pointer by 8 bits (removes 2 params)
+
+		jmp fctr
 
 
 prompted:
