@@ -8,7 +8,7 @@ extern scanf ; declare external function "scanf" for user input
 global main ; set gcc entry point (main function)
 
 section .data ;place to init variable str
-    t0: db "1=addition, 10, 2=subtraction, 10, 3=multiplication, 10, 4=division, 10, 5=x^y, 10, 6=factorial", 10, Input: , 10 ;user input string
+    t0: db "1=addition, 10, "2=subtraction", 10, "3=multiplication", 10, "4=division", 10, "5=x^y", 10, "6=factorial", 10, "Input: " , 0 ;user input string
     t1: db "Number 1: ", 0 ;first user input num 
     t2: db "Number 2: ", 0 ;second user input num 
 
