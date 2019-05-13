@@ -11,6 +11,8 @@ section .data ;place to init variable str
     t0: db "1=addition", 10, "2=subtraction", 10, "3=multiplication", 10, "4=division", 10, "5=x^y", 10, "6=factorial", 10, 10, "Input: ", 0 ;user input string
     t1: db 10, "Number 1: ", 0 ;first user input num 
     t2: db "Number 2: ", 0 ;second user input num 
+    
+    newline: db 10, 0
 
     formatin: db "%d", 0 ;format for input (num)
 
@@ -235,9 +237,17 @@ prompted:
 	mov eax, dword [promptval] ;set eax as promptval
 
 	cmp eax, 1 ;figure out if promptval is 1 for 'yes'
-	je getinfo ;if so then jump to main
+	je reset ;if so then jump to main
 
 	call exit ;exit program if doesn't jump
+	
+
+reset:
+	
+	push newline
+	call printf
+	add esp, 4
+	jmp getinfo
 
 
 welcome: 
