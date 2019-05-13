@@ -8,9 +8,8 @@ extern scanf ; declare external function "scanf" for user input
 global main ; set gcc entry point (main function)
 
 section .data ;place to init variable str
-    t00: db "1=addition", 10, "2=subtraction", 10, "3=multiplication", 10, "4=division", 10, "5=x^y", 10, "6=factorial", 10, "Input: ", 0 ;user input string
-    t0: db "4=division", 10, "5=x^y", 10, "6=factorial", 10, "Input: " , 0 ;second input string
-    t1: db "Number 1: ", 0 ;first user input num 
+    t0: db "1=addition", 10, "2=subtraction", 10, "3=multiplication", 10, "4=division", 10, "5=x^y", 10, "6=factorial", 10, 10, "Input: ", 0 ;user input string
+    t1: db 10, "Number 1: ", 0 ;first user input num 
     t2: db "Number 2: ", 0 ;second user input num 
 
     formatin: db "%d", 0 ;format for input (num)
@@ -39,9 +38,8 @@ main:
 getinfo: 
 
 
-   	push t00; pushes first message to stack (method 1=add, 2=sub, etc...)
+   	push t0; pushes first message to stack (method 1=add, 2=sub, etc...)
    	call printf; prints t0
-
    	add esp, 4 ;adjusts stack pointer by 4 bits (removes 1 param)
    	push method ;pushes method to stack (first param)
    	push formatin ;pushes format to stack (second param)
